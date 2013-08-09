@@ -11,6 +11,7 @@
   [org.apache.httpcomponents/httpclient "4.1.2"]
   [org.clojure/clojure-contrib "1.2.0"]
   [clj-json "0.2.0"]
+  [com.taoensso/carmine "2.1.3"]
 	[twitter-api "0.7.4"]]
   :main twitter-connection.core
   :plugins [[lein2-eclipse "2.0.0"]])

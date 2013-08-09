@@ -15,6 +15,7 @@
 	 [clojurewerkz.titanium.types    :as tt]
 	 [clojurewerkz.titanium.query    :as tq]
    [clojurewerkz.cassaforte.client :as cass]
+   [taoensso.carmine :as car :refer (wcar)]
    [clj-json.core :as json])
   (:import
    (twitter.callbacks.protocols SyncSingleCallback)))
@@ -128,6 +129,39 @@
 
 ;;;;;;;;;;;; Redis
 ;; Use redis for sessions
+(def server1-conn {:pool {<opts>} :spec {<opts>}})
+(defmacro wcar* [& body] `(car/wcar server1-conn ~@body))
+
+(.getInstance java.security.MessageDigest. "SHA1")
+
+(doto (java.security.MessageDigest) (.getInstance "SHA1"))
+
+(defn md5
+	"Generate a MD5 checksum for the given string"
+	[token]
+	(let [hash-bytes
+		(doto (java.security.MessageDigest/getInstance "MD5")
+    (.reset)
+    (.update (.getBytes token)))]
+		(.toString
+		(new java.math.BigInteger 1 (.digest hash-bytes)) ; Positive and the size of the number
+		16))) ; Use base16 i.e. hex
+
+(defn sha1
+	"Generate a SHA1 checksum for the given string"
+	[token]
+	(let [hash-bytes
+		(doto (java.security.MessageDigest/getInstance "SHA1")
+    (.reset)
+    (.update (.getBytes token)))]
+		(.toString
+		(new java.math.BigInteger 1 (.digest hash-bytes)) ; Positive and the size of the number
+		16))) ; Use base16 i.e. hex
+
+;; Generate random cookies for session based login, 32 chars long
+(subs (sha1 "johan") 0 32)
+
+;; Handle login using REST POST request
 
 
 (defn foo
